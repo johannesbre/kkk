@@ -33,13 +33,13 @@ public class ScrapyardService {
     private Properties loadProperties() throws IOException {
         Properties props = new Properties();
         
-        // Bare bruk current directory - der IntelliJ faktisk kjører
-        try (FileInputStream input = new FileInputStream(PROPERTIES_FILE)) {
+        // Last som classpath resource (automatisk inkludert når prosjektet bygges)
+        try (var input = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
+            if (input == null) {
+                throw new IOException("Finner ikke " + PROPERTIES_FILE + " i classpath");
+            }
             props.load(input);
             return props;
-        } catch (IOException e) {
-            throw new IOException("Finner ikke " + PROPERTIES_FILE + " i: " + System.getProperty("user.dir") + 
-                    ". Kopier filen til out/production/[project-name]/ mappen!", e);
         }
     }
 
