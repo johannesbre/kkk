@@ -86,7 +86,7 @@ public class Program {
         }
     }
 
-    //Viser total mengde drivstoff i fosilbilene
+    //Viser total mengde drivstoff i fossilbilene
     private void presentTotalFuel() {
         try {
             int totalFuel = scrapyardService.getTotalFuelAmount();
