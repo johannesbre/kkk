@@ -25,7 +25,7 @@ public class FossilCar extends Vehicle {
     public String getVehicleType() {
         return "FossilCar";
     }
-  //Detaljer om fossilbilen i en streng
+    //Detaljer om fossilbilen i en streng
     @Override
     public String toString() {
         return super.toString() + String.format(", Fuel: %s, Amount: %dL", fuelType, fuelAmount);
