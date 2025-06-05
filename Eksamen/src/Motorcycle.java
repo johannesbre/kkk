@@ -17,7 +17,7 @@ public class Motorcycle extends Vehicle {
         this.numberOfWheels = numberOfWheels;
     }
 
-    public boolean getHasSidecar() {
+    public boolean hasSidecar() {
         return hasSidecar; 
     }
 
@@ -25,7 +25,7 @@ public class Motorcycle extends Vehicle {
         return engineCapacity; 
     }
 
-    public boolean getIsModified() {
+    public boolean isModified() {
         return isModified; 
     }
 
