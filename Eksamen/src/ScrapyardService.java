@@ -33,47 +33,14 @@ public class ScrapyardService {
     private Properties loadProperties() throws IOException {
         Properties props = new Properties();
         
-        // Finn project root ved å søke oppover i filsystemet
-        java.io.File currentDir = new java.io.File(System.getProperty("user.dir"));
-        java.io.File projectRoot = findProjectRoot(currentDir);
-        
-        // Prøv alle mulige steder
-        java.io.File[] muligeFiler = {
-            new java.io.File(PROPERTIES_FILE),
-            new java.io.File(projectRoot, PROPERTIES_FILE),
-            new java.io.File(projectRoot, "src/" + PROPERTIES_FILE),
-            new java.io.File(currentDir, PROPERTIES_FILE),
-            new java.io.File(currentDir.getParent(), PROPERTIES_FILE),
-            new java.io.File(currentDir.getParent() + "/" + PROPERTIES_FILE),
-            new java.io.File("../../../" + PROPERTIES_FILE),
-            new java.io.File("../../" + PROPERTIES_FILE),
-            new java.io.File("../" + PROPERTIES_FILE)
-        };
-        
-        for (java.io.File fil : muligeFiler) {
-            if (fil.exists() && fil.canRead()) {
-                try (FileInputStream input = new FileInputStream(fil)) {
-                    props.load(input);
-                    return props;
-                }
-            }
+        // Bare bruk current directory - der IntelliJ faktisk kjører
+        try (FileInputStream input = new FileInputStream(PROPERTIES_FILE)) {
+            props.load(input);
+            return props;
+        } catch (IOException e) {
+            throw new IOException("Finner ikke " + PROPERTIES_FILE + " i: " + System.getProperty("user.dir") + 
+                    ". Kopier filen til out/production/[project-name]/ mappen!", e);
         }
-        
-        throw new IOException("Finner ikke " + PROPERTIES_FILE + " - søkte i: " + System.getProperty("user.dir"));
-    }
-    
-    // Hjelpemetode for å finne project root
-    private java.io.File findProjectRoot(java.io.File dir) {
-        java.io.File current = dir;
-        while (current != null) {
-            // Sjekk om vi finner src folder eller properties fil
-            if (new java.io.File(current, "src").exists() || 
-                new java.io.File(current, PROPERTIES_FILE).exists()) {
-                return current;
-            }
-            current = current.getParentFile();
-        }
-        return dir; // Fallback til current directory
     }
 
     //Bygger jdbc url fra properties
