@@ -73,13 +73,18 @@ public class ScrapyardService {
         List<Scrapyard> scrapyards = new ArrayList<>();
         List<Vehicle> vehicles = new ArrayList<>();
 
-        // Last som classpath resource (automatisk inkludert når prosjektet bygges)
+        // Prøver å finne filen i src mappen
         BufferedReader reader = null;
-        var input = getClass().getClassLoader().getResourceAsStream(filePath);
-        if (input == null) {
-            throw new IOException("Finner ikke " + filePath + " i classpath");
+        try {
+            reader = new BufferedReader(new FileReader("src/" + filePath));
+        } catch (IOException e) {
+            // Prøver i current directory
+            try {
+                reader = new BufferedReader(new FileReader(filePath));
+            } catch (IOException e2) {
+                throw new IOException("Finner ikke " + filePath, e);
+            }
         }
-        reader = new BufferedReader(new java.io.InputStreamReader(input));
 
         //Leser filen
         try (BufferedReader r = reader) {
