@@ -10,14 +10,10 @@ import java.util.Map;
 import java.util.Properties;
 
 public class ScrapyardService {
-    private Connection conn; //gir databaseforbindelse
+    private Connection conn; //databaseforbindelse
 
-    //sql setninger og tekstfilen
+    //Filnavn for konfigurasjon
     private static final String PROPERTIES_FILE = "Scrapyard.properties";
-    private static final String INSERT_SCRAPYARD_SQL = "INSERT INTO Scrapyard (ScrapyardID, Name, Address, PhoneNumber) VALUES (%d, '%s', '%s', '%s')";
-    private static final String INSERT_FOSSILCAR_SQL = "INSERT INTO FossilCar (VehicleID, Brand, Model, YearModel, RegistrationNumber, ChassisNumber, Driveable, NumberOfSellableWheels, ScrapyardID, FuelType, FuelAmount) VALUES (%d, '%s', '%s', %d, '%s', '%s', %b, %d, %d, '%s', %d)";
-    private static final String INSERT_ELECTRICCAR_SQL = "INSERT INTO ElectricCar (VehicleID, Brand, Model, YearModel, RegistrationNumber, ChassisNumber, Driveable, NumberOfSellableWheels, ScrapyardID, BatteryCapacity, ChargeLevel) VALUES (%d, '%s', '%s', %d, '%s', '%s', %b, %d, %d, %d, %d)";
-    private static final String INSERT_MOTORCYCLE_SQL = "INSERT INTO Motorcycle (VehicleID, Brand, Model, YearModel, RegistrationNumber, ChassisNumber, Driveable, NumberOfSellableWheels, ScrapyardID, HasSidecar, EngineCapacity, IsModified, NumberOfWheels) VALUES (%d, '%s', '%s', %d, '%s', '%s', %b, %d, %d, %b, %d, %b, %d)";
 
     //Dette er det som setter opp hele databaseforbindelsen
     public ScrapyardService() throws IOException, SQLException {
