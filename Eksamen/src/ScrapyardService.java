@@ -78,52 +78,76 @@ public class ScrapyardService {
         List<Scrapyard> scrapyards = new ArrayList<>();
         List<Vehicle> vehicles = new ArrayList<>();
 
+        // Prøver flere steder hvor filen kan være
+        String[] muligeSti = {
+            filePath,
+            "src/" + filePath,
+            "../" + filePath,
+            "./" + filePath
+        };
+        
+        BufferedReader reader = null;
+        IOException sisteFeil = null;
+        
+        for (String sti : muligeSti) {
+            try {
+                reader = new BufferedReader(new FileReader(sti));
+                break; // Fant filen!
+            } catch (IOException e) {
+                sisteFeil = e;
+            }
+        }
+        
+        if (reader == null) {
+            throw new IOException("Finner ikke " + filePath + " - sjekket flere mapper", sisteFeil);
+        }
+
         //Leser filen
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            int antallScrapyards = Integer.parseInt(reader.readLine().trim());
+        try (BufferedReader r = reader) {
+            int antallScrapyards = Integer.parseInt(r.readLine().trim());
             
             //Leser skraphandlere
             for (int i = 0; i < antallScrapyards; i++) {
-                int id = Integer.parseInt(reader.readLine().trim());
-                String navn = reader.readLine().trim();
-                String adresse = reader.readLine().trim();
-                String telefon = reader.readLine().trim();
-                reader.readLine(); //hopper over ---
+                int id = Integer.parseInt(r.readLine().trim());
+                String navn = r.readLine().trim();
+                String adresse = r.readLine().trim();
+                String telefon = r.readLine().trim();
+                r.readLine(); //hopper over ---
                 scrapyards.add(new Scrapyard(id, navn, adresse, telefon));
             }
 
-            int antallVehicles = Integer.parseInt(reader.readLine().trim());
+            int antallVehicles = Integer.parseInt(r.readLine().trim());
             
             //Leser kjøretøy
             for (int i = 0; i < antallVehicles; i++) {
-                int vehicleId = Integer.parseInt(reader.readLine().trim());
-                int scrapyardId = Integer.parseInt(reader.readLine().trim());
-                String type = reader.readLine().trim();
-                String merke = reader.readLine().trim();
-                String modell = reader.readLine().trim();
-                int aar = Integer.parseInt(reader.readLine().trim());
-                String regNr = reader.readLine().trim();
-                String chassis = reader.readLine().trim();
-                boolean kjorbar = Boolean.parseBoolean(reader.readLine().trim());
-                int hjul = Integer.parseInt(reader.readLine().trim());
+                int vehicleId = Integer.parseInt(r.readLine().trim());
+                int scrapyardId = Integer.parseInt(r.readLine().trim());
+                String type = r.readLine().trim();
+                String merke = r.readLine().trim();
+                String modell = r.readLine().trim();
+                int aar = Integer.parseInt(r.readLine().trim());
+                String regNr = r.readLine().trim();
+                String chassis = r.readLine().trim();
+                boolean kjorbar = Boolean.parseBoolean(r.readLine().trim());
+                int hjul = Integer.parseInt(r.readLine().trim());
 
                 Vehicle vehicle = null;
                 
                 if (type.equals("FossilCar")) {
-                    String drivstoffType = reader.readLine().trim();
-                    int mengde = Integer.parseInt(reader.readLine().trim());
+                    String drivstoffType = r.readLine().trim();
+                    int mengde = Integer.parseInt(r.readLine().trim());
                     vehicle = new FossilCar(vehicleId, merke, modell, aar, regNr, chassis, kjorbar, hjul, scrapyardId, drivstoffType, mengde);
                     
                 } else if (type.equals("ElectricCar")) {
-                    int batteriKap = Integer.parseInt(reader.readLine().trim());
-                    int ladeNivaa = Integer.parseInt(reader.readLine().trim());
+                    int batteriKap = Integer.parseInt(r.readLine().trim());
+                    int ladeNivaa = Integer.parseInt(r.readLine().trim());
                     vehicle = new ElectricCar(vehicleId, merke, modell, aar, regNr, chassis, kjorbar, hjul, scrapyardId, batteriKap, ladeNivaa);
                     
                 } else if (type.equals("Motorcycle")) {
-                    boolean sidevogn = Boolean.parseBoolean(reader.readLine().trim());
-                    int motorKap = Integer.parseInt(reader.readLine().trim());
-                    boolean modifisert = Boolean.parseBoolean(reader.readLine().trim());
-                    int antallHjul = Integer.parseInt(reader.readLine().trim());
+                    boolean sidevogn = Boolean.parseBoolean(r.readLine().trim());
+                    int motorKap = Integer.parseInt(r.readLine().trim());
+                    boolean modifisert = Boolean.parseBoolean(r.readLine().trim());
+                    int antallHjul = Integer.parseInt(r.readLine().trim());
                     vehicle = new Motorcycle(vehicleId, merke, modell, aar, regNr, chassis, kjorbar, hjul, scrapyardId, sidevogn, motorKap, modifisert, antallHjul);
                     
                 } else {
@@ -131,7 +155,7 @@ public class ScrapyardService {
                 }
                 
                 vehicles.add(vehicle);
-                reader.readLine(); //hopper over ---
+                r.readLine(); //hopper over ---
             }
         }
 
