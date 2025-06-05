@@ -33,13 +33,18 @@ public class ScrapyardService {
     private Properties loadProperties() throws IOException {
         Properties props = new Properties();
         
-        // Last som classpath resource (automatisk inkludert når prosjektet bygges)
-        try (var input = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
-            if (input == null) {
-                throw new IOException("Finner ikke " + PROPERTIES_FILE + " i classpath");
-            }
+        // Prøver å finne filen i src mappen
+        try (FileInputStream input = new FileInputStream("src/" + PROPERTIES_FILE)) {
             props.load(input);
             return props;
+        } catch (IOException e) {
+            // Prøver i current directory
+            try (FileInputStream input = new FileInputStream(PROPERTIES_FILE)) {
+                props.load(input);
+                return props;
+            } catch (IOException e2) {
+                throw new IOException("Finner ikke " + PROPERTIES_FILE, e);
+            }
         }
     }
 
