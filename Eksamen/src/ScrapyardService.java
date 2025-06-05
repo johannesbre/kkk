@@ -68,33 +68,13 @@ public class ScrapyardService {
         List<Scrapyard> scrapyards = new ArrayList<>();
         List<Vehicle> vehicles = new ArrayList<>();
 
-        // Finn project root og søk etter fil
-        java.io.File currentDir = new java.io.File(System.getProperty("user.dir"));
-        java.io.File projectRoot = findProjectRoot(currentDir);
-        
-        java.io.File[] muligeFiler = {
-            new java.io.File(filePath),
-            new java.io.File(projectRoot, filePath),
-            new java.io.File(projectRoot, "src/" + filePath),
-            new java.io.File(currentDir, filePath),
-            new java.io.File(currentDir.getParent(), filePath)
-        };
-        
+        // Bare bruk current directory - der IntelliJ faktisk kjører
         BufferedReader reader = null;
-        
-        for (java.io.File fil : muligeFiler) {
-            if (fil.exists() && fil.canRead()) {
-                try {
-                    reader = new BufferedReader(new FileReader(fil));
-                    break; // Fant filen!
-                } catch (IOException e) {
-                    // Fortsetter til neste fil
-                }
-            }
-        }
-        
-        if (reader == null) {
-            throw new IOException("Finner ikke " + filePath + " - søkte i project root og flere steder");
+        try {
+            reader = new BufferedReader(new FileReader(filePath));
+        } catch (IOException e) {
+            throw new IOException("Finner ikke " + filePath + " i: " + System.getProperty("user.dir") + 
+                    ". Kopier filen til out/production/[project-name]/ mappen!", e);
         }
 
         //Leser filen
