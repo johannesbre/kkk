@@ -68,14 +68,13 @@ public class ScrapyardService {
         List<Scrapyard> scrapyards = new ArrayList<>();
         List<Vehicle> vehicles = new ArrayList<>();
 
-        // Bare bruk current directory - der IntelliJ faktisk kjører
+        // Last som classpath resource (automatisk inkludert når prosjektet bygges)
         BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(filePath));
-        } catch (IOException e) {
-            throw new IOException("Finner ikke " + filePath + " i: " + System.getProperty("user.dir") + 
-                    ". Kopier filen til out/production/[project-name]/ mappen!", e);
+        var input = getClass().getClassLoader().getResourceAsStream(filePath);
+        if (input == null) {
+            throw new IOException("Finner ikke " + filePath + " i classpath");
         }
+        reader = new BufferedReader(new java.io.InputStreamReader(input));
 
         //Leser filen
         try (BufferedReader r = reader) {
