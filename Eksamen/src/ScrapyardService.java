@@ -209,9 +209,9 @@ public class ScrapyardService {
             pstmt.setBoolean(7, bike.isDriveable());
             pstmt.setInt(8, bike.getNumberOfSellableWheels());
             pstmt.setInt(9, bike.getScrapyardId());
-            pstmt.setBoolean(10, bike.getHasSidecar());
+            pstmt.setBoolean(10, bike.hasSidecar());
             pstmt.setInt(11, bike.getEngineCapacity());
-            pstmt.setBoolean(12, bike.getIsModified());
+            pstmt.setBoolean(12, bike.isModified());
             pstmt.setInt(13, bike.getNumberOfWheels());
             pstmt.executeUpdate();
         }
