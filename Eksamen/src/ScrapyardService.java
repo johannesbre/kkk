@@ -101,25 +101,28 @@ public class ScrapyardService {
         List<Scrapyard> scrapyards = new ArrayList<>();
         List<Vehicle> vehicles = new ArrayList<>();
 
-        // IntelliJ kjører fra out/production/project-name/ så vi må gå opp til project root
-        String[] muligeSti = {
-            filePath,                          // samme mappe
-            "../../../" + filePath,           // project root fra out/production/project-name/
-            "../../" + filePath,              // fra out/production/
-            "../" + filePath,                 // fra out/
-            "src/" + filePath,                // i src folder
-            "../../../src/" + filePath        // src folder fra out/production/project-name/
+        // Finn project root og søk etter fil
+        java.io.File currentDir = new java.io.File(System.getProperty("user.dir"));
+        java.io.File projectRoot = findProjectRoot(currentDir);
+        
+        java.io.File[] muligeFiler = {
+            new java.io.File(filePath),
+            new java.io.File(projectRoot, filePath),
+            new java.io.File(projectRoot, "src/" + filePath),
+            new java.io.File(currentDir, filePath),
+            new java.io.File(currentDir.getParent(), filePath)
         };
         
         BufferedReader reader = null;
-        IOException sisteFeil = null;
         
-        for (String sti : muligeSti) {
-            try {
-                reader = new BufferedReader(new FileReader(sti));
-                break; // Fant filen!
-            } catch (IOException e) {
-                sisteFeil = e;
+        for (java.io.File fil : muligeFiler) {
+            if (fil.exists() && fil.canRead()) {
+                try {
+                    reader = new BufferedReader(new FileReader(fil));
+                    break; // Fant filen!
+                } catch (IOException e) {
+                    // Fortsetter til neste fil
+                }
             }
         }
         
