@@ -16,6 +16,6 @@ Polymorfi brukes når jeg håndterer en liste av `Vehicle`-objekter i ScrapyardS
 
 Den største utfordringen var å få til riktig mapping mellom objektene og databasen. Først brukte jeg record-klasser, men innså at dette ikke passet så godt med den objektorienterte tilnærmingen vi har lært. Jeg endret derfor til vanlige klasser med getters og setters.
 
-En annen utfordring var å håndtere alle de forskjellige unntakene som kan oppstå ved database- og filoperasjoner. Jeg løste dette ved å bruke try-catch blokker og gi gode feilmeldinger til brukeren.
+En annen utfordring var å sikre trygg databasehåndtering. Først brukte jeg String.format() for SQL-spørringene, men lærte at dette kan være farlig på grunn av SQL injection. Jeg endret derfor til PreparedStatement som er mye tryggere. Koden ble lengre, men mye bedre.
 
-Jeg er fornøyd med hvordan jeg løste fillesingen og databaseimporteringen. Koden leser strukturert gjennom vehicles.txt-filen og mapper dataene riktig til de forskjellige kjøretøytypene før de legges inn i databasen.
+Jeg er fornøyd med hvordan jeg løste fillesingen og databaseimporteringen. Koden leser strukturert gjennom vehicles.txt-filen og mapper dataene riktig til de forskjellige kjøretøytypene før de legges inn i databasen. Jeg delte også opp ScrapyardService i mindre metoder for å gjøre koden lettere å forstå.
