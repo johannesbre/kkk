@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class ScrapyardService {
-    private Connection conn; //gir databaseforbindelse!!1
+    private Connection conn; //gir databaseforbindelse
 
     //sql setninger og tekstfilen
     private static final String PROPERTIES_FILE = "Scrapyard.properties";
