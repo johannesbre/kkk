@@ -33,12 +33,14 @@ public class ScrapyardService {
     private Properties loadProperties() throws IOException {
         Properties props = new Properties();
         
-        // Prøver flere steder hvor filen kan være
+        // IntelliJ kjører fra out/production/project-name/ så vi må gå opp til project root
         String[] muligeSti = {
-            PROPERTIES_FILE,
-            "src/" + PROPERTIES_FILE,
-            "../" + PROPERTIES_FILE,
-            "./" + PROPERTIES_FILE
+            PROPERTIES_FILE,                    // samme mappe
+            "../../../" + PROPERTIES_FILE,     // project root fra out/production/project-name/
+            "../../" + PROPERTIES_FILE,        // fra out/production/
+            "../" + PROPERTIES_FILE,           // fra out/
+            "src/" + PROPERTIES_FILE,          // i src folder
+            "../../../src/" + PROPERTIES_FILE  // src folder fra out/production/project-name/
         };
         
         for (String sti : muligeSti) {
@@ -50,7 +52,7 @@ public class ScrapyardService {
             }
         }
         
-        throw new IOException("Finner ikke " + PROPERTIES_FILE + " - sjekket flere mapper");
+        throw new IOException("Finner ikke " + PROPERTIES_FILE + " - sjekket flere mapper inkludert project root");
     }
 
     //Bygger jdbc url fra properties
