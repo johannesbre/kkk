@@ -103,7 +103,7 @@ public class ScrapyardService {
         }
         
         if (reader == null) {
-            throw new IOException("Finner ikke " + filePath + " - sjekket flere mapper", sisteFeil);
+            throw new IOException("Finner ikke " + filePath + " - sjekket flere mapper inkludert project root", sisteFeil);
         }
 
         //Leser filen
