@@ -5,7 +5,7 @@ public class Motorcycle extends Vehicle {
     private final boolean isModified;
     private final int numberOfWheels;
 
-    //Kontruktør!!
+    //Konstruktør for Motorcycle
     public Motorcycle(int id, String brand, String model, int yearModel, String registrationNumber,
      String chassisNumber, boolean driveable, int numberOfSellableWheels, int scrapyardId,
       boolean hasSidecar, int engineCapacity, boolean isModified, int numberOfWheels) {
@@ -17,17 +17,21 @@ public class Motorcycle extends Vehicle {
         this.numberOfWheels = numberOfWheels;
     }
 
-    public boolean hasSidecar() {
-        return hasSidecar; }
+    public boolean getHasSidecar() {
+        return hasSidecar; 
+    }
 
-    public int engineCapacity() {
-        return engineCapacity; }
+    public int getEngineCapacity() {
+        return engineCapacity; 
+    }
 
-    public boolean isModified() {
-        return isModified; }
+    public boolean getIsModified() {
+        return isModified; 
+    }
 
-    public int numberOfWheels() {
-        return numberOfWheels; }
+    public int getNumberOfWheels() {
+        return numberOfWheels; 
+    }
 
     @Override
     public String getVehicleType() {

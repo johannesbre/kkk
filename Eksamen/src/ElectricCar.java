@@ -2,7 +2,6 @@
 public class ElectricCar extends Vehicle {
 
     private final int batteryCapacity;
-
     private final int chargeLevel;
 
     //Elbilens konstruktør
@@ -15,11 +14,13 @@ public class ElectricCar extends Vehicle {
         this.chargeLevel = chargeLevel;
     }
 
-    public int batteryCapacity() {
-        return batteryCapacity; }
+    public int getBatteryCapacity() {
+        return batteryCapacity; 
+    }
 
-    public int chargeLevel() {
-        return chargeLevel; }
+    public int getChargeLevel() {
+        return chargeLevel; 
+    }
 
     @Override
     public String getVehicleType() {

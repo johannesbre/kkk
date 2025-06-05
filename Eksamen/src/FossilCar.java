@@ -2,7 +2,6 @@
 public class FossilCar extends Vehicle {
 
  private final String fuelType;
-
  private final int fuelAmount;
 
     public FossilCar(int id, String brand, String model, int yearModel, String registrationNumber,
@@ -14,11 +13,13 @@ public class FossilCar extends Vehicle {
         this.fuelAmount = fuelAmount;
     }
 
-    public String fuelType() {
-        return fuelType; }
+    public String getFuelType() {
+        return fuelType; 
+    }
 
-    public int fuelAmount() {
-        return fuelAmount; }
+    public int getFuelAmount() {
+        return fuelAmount; 
+    }
 
     @Override
     public String getVehicleType() {

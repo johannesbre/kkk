@@ -1,4 +1,4 @@
-/*Abstrakt superklasse for kjørtøy*/
+/*Abstrakt superklasse for kjøretøy*/
 public abstract class Vehicle {
 
     private final int id;
@@ -11,7 +11,7 @@ public abstract class Vehicle {
     private final int numberOfSellableWheels;
     private final int scrapyardId;
 
-    //Felles antributter for kjørtøy
+    //Felles attributter for kjøretøy
     public Vehicle(int id, String brand, String model, int yearModel, String registrationNumber,
        String chassisNumber, boolean driveable, int numberOfSellableWheels, int scrapyardId) {
 
@@ -27,37 +27,45 @@ public abstract class Vehicle {
     }
 
     // Gettere for attributtene
-    public int id() {
-        return id; }
+    public int getId() {
+        return id; 
+    }
 
-    public String brand() {
-        return brand; }
+    public String getBrand() {
+        return brand; 
+    }
 
-    public String model() {
-        return model; }
+    public String getModel() {
+        return model; 
+    }
 
-    public int yearModel() {
-        return yearModel; }
+    public int getYearModel() {
+        return yearModel; 
+    }
 
-    public String registrationNumber() {
-        return registrationNumber; }
+    public String getRegistrationNumber() {
+        return registrationNumber; 
+    }
 
-    public String chassisNumber() {
-        return chassisNumber; }
+    public String getChassisNumber() {
+        return chassisNumber; 
+    }
 
-    public boolean driveable() {
-        return driveable; }
+    public boolean isDriveable() {
+        return driveable; 
+    }
 
-    public int numberOfSellableWheels() {
-        return numberOfSellableWheels; }
+    public int getNumberOfSellableWheels() {
+        return numberOfSellableWheels; 
+    }
 
-    public int scrapyardId() {
-        return scrapyardId; }
-
+    public int getScrapyardId() {
+        return scrapyardId; 
+    }
 
     public abstract String getVehicleType();
 
-    //felles detaljer om alle kjøretøyt
+    //Felles detaljer om alle kjøretøy
     @Override
     public String toString() {
         return String.format("ID: %d, Brand: %s, Model: %s, Year: %d, Reg: %s, Drivable: %b",
