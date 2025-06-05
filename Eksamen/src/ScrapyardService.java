@@ -32,12 +32,20 @@ public class ScrapyardService {
     //Laster properties-filen
     private Properties loadProperties() throws IOException {
         Properties props = new Properties();
+        
+        // Prøver først i current directory
         try (FileInputStream input = new FileInputStream(PROPERTIES_FILE)) {
             props.load(input);
-        } catch (IOException e) {
-            throw new IOException("Finner ikke " + PROPERTIES_FILE + " i mappen: " + System.getProperty("user.dir"), e);
+            return props;
+        } catch (IOException e1) {
+            // Prøver så i src folder
+            try (FileInputStream input = new FileInputStream("src/" + PROPERTIES_FILE)) {
+                props.load(input);
+                return props;
+            } catch (IOException e2) {
+                throw new IOException("Finner ikke " + PROPERTIES_FILE + " i mappen: " + System.getProperty("user.dir") + " eller src/", e1);
+            }
         }
-        return props;
     }
 
     //Bygger jdbc url fra properties
