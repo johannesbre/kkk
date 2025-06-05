@@ -33,29 +33,24 @@ public class ScrapyardService {
     private Properties loadProperties() throws IOException {
         Properties props = new Properties();
         
-        // Prøver først som classpath resource
-        try (var input = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
-            if (input != null) {
+        // Prøver flere steder hvor filen kan være
+        String[] muligeSti = {
+            PROPERTIES_FILE,
+            "src/" + PROPERTIES_FILE,
+            "../" + PROPERTIES_FILE,
+            "./" + PROPERTIES_FILE
+        };
+        
+        for (String sti : muligeSti) {
+            try (FileInputStream input = new FileInputStream(sti)) {
                 props.load(input);
                 return props;
+            } catch (IOException e) {
+                // Prøver neste sti
             }
-        } catch (IOException e) {
-            // Fortsetter til file-basert loading
         }
         
-        // Prøver så som vanlig fil
-        try (FileInputStream input = new FileInputStream(PROPERTIES_FILE)) {
-            props.load(input);
-            return props;
-        } catch (IOException e1) {
-            // Prøver til slutt i src folder
-            try (FileInputStream input = new FileInputStream("src/" + PROPERTIES_FILE)) {
-                props.load(input);
-                return props;
-            } catch (IOException e2) {
-                throw new IOException("Finner ikke " + PROPERTIES_FILE + " - prøvd classpath, current dir og src/", e1);
-            }
-        }
+        throw new IOException("Finner ikke " + PROPERTIES_FILE + " - sjekket flere mapper");
     }
 
     //Bygger jdbc url fra properties
