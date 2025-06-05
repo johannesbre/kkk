@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Program {
-    private final ScrapyardService scrapyardService; //håndetrer databasen
+    private final ScrapyardService scrapyardService; //håndterer databasen
 
     public Program() throws SQLException, IOException {
         scrapyardService = new ScrapyardService();
