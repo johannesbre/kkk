@@ -33,17 +33,27 @@ public class ScrapyardService {
     private Properties loadProperties() throws IOException {
         Properties props = new Properties();
         
-        // Prøver først i current directory
+        // Prøver først som classpath resource
+        try (var input = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
+            if (input != null) {
+                props.load(input);
+                return props;
+            }
+        } catch (IOException e) {
+            // Fortsetter til file-basert loading
+        }
+        
+        // Prøver så som vanlig fil
         try (FileInputStream input = new FileInputStream(PROPERTIES_FILE)) {
             props.load(input);
             return props;
         } catch (IOException e1) {
-            // Prøver så i src folder
+            // Prøver til slutt i src folder
             try (FileInputStream input = new FileInputStream("src/" + PROPERTIES_FILE)) {
                 props.load(input);
                 return props;
             } catch (IOException e2) {
-                throw new IOException("Finner ikke " + PROPERTIES_FILE + " i mappen: " + System.getProperty("user.dir") + " eller src/", e1);
+                throw new IOException("Finner ikke " + PROPERTIES_FILE + " - prøvd classpath, current dir og src/", e1);
             }
         }
     }
