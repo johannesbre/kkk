@@ -80,12 +80,14 @@ public class ScrapyardService {
         List<Scrapyard> scrapyards = new ArrayList<>();
         List<Vehicle> vehicles = new ArrayList<>();
 
-        // Prøver flere steder hvor filen kan være
+        // IntelliJ kjører fra out/production/project-name/ så vi må gå opp til project root
         String[] muligeSti = {
-            filePath,
-            "src/" + filePath,
-            "../" + filePath,
-            "./" + filePath
+            filePath,                          // samme mappe
+            "../../../" + filePath,           // project root fra out/production/project-name/
+            "../../" + filePath,              // fra out/production/
+            "../" + filePath,                 // fra out/
+            "src/" + filePath,                // i src folder
+            "../../../src/" + filePath        // src folder fra out/production/project-name/
         };
         
         BufferedReader reader = null;
