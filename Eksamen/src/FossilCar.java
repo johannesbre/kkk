@@ -1,8 +1,8 @@
 //Klasse for fossilbil, som arver fra Vehicle:
 public class FossilCar extends Vehicle {
 
- private final String fuelType;
- private final int fuelAmount;
+    private final String fuelType;
+    private final int fuelAmount;
 
     public FossilCar(int id, String brand, String model, int yearModel, String registrationNumber,
        String chassisNumber, boolean driveable, int numberOfSellableWheels, int scrapyardId,
