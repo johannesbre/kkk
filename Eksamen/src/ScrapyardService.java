@@ -33,26 +33,47 @@ public class ScrapyardService {
     private Properties loadProperties() throws IOException {
         Properties props = new Properties();
         
-        // IntelliJ kjører fra out/production/project-name/ så vi må gå opp til project root
-        String[] muligeSti = {
-            PROPERTIES_FILE,                    // samme mappe
-            "../../../" + PROPERTIES_FILE,     // project root fra out/production/project-name/
-            "../../" + PROPERTIES_FILE,        // fra out/production/
-            "../" + PROPERTIES_FILE,           // fra out/
-            "src/" + PROPERTIES_FILE,          // i src folder
-            "../../../src/" + PROPERTIES_FILE  // src folder fra out/production/project-name/
+        // Finn project root ved å søke oppover i filsystemet
+        java.io.File currentDir = new java.io.File(System.getProperty("user.dir"));
+        java.io.File projectRoot = findProjectRoot(currentDir);
+        
+        // Prøv alle mulige steder
+        java.io.File[] muligeFiler = {
+            new java.io.File(PROPERTIES_FILE),
+            new java.io.File(projectRoot, PROPERTIES_FILE),
+            new java.io.File(projectRoot, "src/" + PROPERTIES_FILE),
+            new java.io.File(currentDir, PROPERTIES_FILE),
+            new java.io.File(currentDir.getParent(), PROPERTIES_FILE),
+            new java.io.File(currentDir.getParent() + "/" + PROPERTIES_FILE),
+            new java.io.File("../../../" + PROPERTIES_FILE),
+            new java.io.File("../../" + PROPERTIES_FILE),
+            new java.io.File("../" + PROPERTIES_FILE)
         };
         
-        for (String sti : muligeSti) {
-            try (FileInputStream input = new FileInputStream(sti)) {
-                props.load(input);
-                return props;
-            } catch (IOException e) {
-                // Prøver neste sti
+        for (java.io.File fil : muligeFiler) {
+            if (fil.exists() && fil.canRead()) {
+                try (FileInputStream input = new FileInputStream(fil)) {
+                    props.load(input);
+                    return props;
+                }
             }
         }
         
-        throw new IOException("Finner ikke " + PROPERTIES_FILE + " - sjekket flere mapper inkludert project root");
+        throw new IOException("Finner ikke " + PROPERTIES_FILE + " - søkte i: " + System.getProperty("user.dir"));
+    }
+    
+    // Hjelpemetode for å finne project root
+    private java.io.File findProjectRoot(java.io.File dir) {
+        java.io.File current = dir;
+        while (current != null) {
+            // Sjekk om vi finner src folder eller properties fil
+            if (new java.io.File(current, "src").exists() || 
+                new java.io.File(current, PROPERTIES_FILE).exists()) {
+                return current;
+            }
+            current = current.getParentFile();
+        }
+        return dir; // Fallback til current directory
     }
 
     //Bygger jdbc url fra properties
