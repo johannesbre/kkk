@@ -10,16 +10,16 @@ import java.util.Map;
 import java.util.Properties;
 
 public class ScrapyardService {
-    private Connection conn; //gir databaseforbinderlse!!1
+    private Connection conn; //gir databaseforbindelse!!1
 
-    //sql sertninger og tekstfilen
+    //sql setninger og tekstfilen
     private static final String PROPERTIES_FILE = "Scrapyard.properties";
     private static final String INSERT_SCRAPYARD_SQL = "INSERT INTO Scrapyard (ScrapyardID, Name, Address, PhoneNumber) VALUES (%d, '%s', '%s', '%s')";
     private static final String INSERT_FOSSILCAR_SQL = "INSERT INTO FossilCar (VehicleID, Brand, Model, YearModel, RegistrationNumber, ChassisNumber, Driveable, NumberOfSellableWheels, ScrapyardID, FuelType, FuelAmount) VALUES (%d, '%s', '%s', %d, '%s', '%s', %b, %d, %d, '%s', %d)";
     private static final String INSERT_ELECTRICCAR_SQL = "INSERT INTO ElectricCar (VehicleID, Brand, Model, YearModel, RegistrationNumber, ChassisNumber, Driveable, NumberOfSellableWheels, ScrapyardID, BatteryCapacity, ChargeLevel) VALUES (%d, '%s', '%s', %d, '%s', '%s', %b, %d, %d, %d, %d)";
     private static final String INSERT_MOTORCYCLE_SQL = "INSERT INTO Motorcycle (VehicleID, Brand, Model, YearModel, RegistrationNumber, ChassisNumber, Driveable, NumberOfSellableWheels, ScrapyardID, HasSidecar, EngineCapacity, IsModified, NumberOfWheels) VALUES (%d, '%s', '%s', %d, '%s', '%s', %b, %d, %d, %b, %d, %b, %d)";
 
-    //Dette er det som setter opp hels<e databaseforbdineløsen
+    //Dette er det som setter opp hele databaseforbindelsen
     public ScrapyardService() throws IOException, SQLException {
         Properties props = loadProperties();
         String dbUrl = constructJdbcUrl(props);
@@ -122,37 +122,37 @@ public class ScrapyardService {
         // Putter data inn i databasen
         try (Statement st = conn.createStatement()) {
             for (Scrapyard scrapyard : scrapyards) {
-                String sql = String.format(INSERT_SCRAPYARD_SQL, scrapyard.id(), scrapyard.name(),
-                        scrapyard.address(), scrapyard.phoneNumber());
+                String sql = String.format(INSERT_SCRAPYARD_SQL, scrapyard.getId(), scrapyard.getName(),
+                        scrapyard.getAddress(), scrapyard.getPhoneNumber());
                 st.executeUpdate(sql);
             }
             for (Vehicle vehicle : vehicles) {
                 String sql;
                 if (vehicle instanceof FossilCar fossilCar) {
-                    sql = String.format(INSERT_FOSSILCAR_SQL, vehicle.id(), vehicle.brand(), vehicle.model(),
-                            vehicle.yearModel(), vehicle.registrationNumber(), vehicle.chassisNumber(),
-                            vehicle.driveable(), vehicle.numberOfSellableWheels(), vehicle.scrapyardId(),
-                            fossilCar.fuelType(), fossilCar.fuelAmount());
+                    sql = String.format(INSERT_FOSSILCAR_SQL, vehicle.getId(), vehicle.getBrand(), vehicle.getModel(),
+                            vehicle.getYearModel(), vehicle.getRegistrationNumber(), vehicle.getChassisNumber(),
+                            vehicle.isDriveable(), vehicle.getNumberOfSellableWheels(), vehicle.getScrapyardId(),
+                            fossilCar.getFuelType(), fossilCar.getFuelAmount());
 
                 } else if (vehicle instanceof ElectricCar electricCar) {
-                    sql = String.format(INSERT_ELECTRICCAR_SQL, vehicle.id(), vehicle.brand(), vehicle.model(),
-                            vehicle.yearModel(), vehicle.registrationNumber(), vehicle.chassisNumber(),
-                            vehicle.driveable(), vehicle.numberOfSellableWheels(), vehicle.scrapyardId(),
-                            electricCar.batteryCapacity(), electricCar.chargeLevel());
+                    sql = String.format(INSERT_ELECTRICCAR_SQL, vehicle.getId(), vehicle.getBrand(), vehicle.getModel(),
+                            vehicle.getYearModel(), vehicle.getRegistrationNumber(), vehicle.getChassisNumber(),
+                            vehicle.isDriveable(), vehicle.getNumberOfSellableWheels(), vehicle.getScrapyardId(),
+                            electricCar.getBatteryCapacity(), electricCar.getChargeLevel());
 
                 } else {
                     Motorcycle motorcycle = (Motorcycle) vehicle;
-                    sql = String.format(INSERT_MOTORCYCLE_SQL, vehicle.id(), vehicle.brand(), vehicle.model(),
-                            vehicle.yearModel(), vehicle.registrationNumber(), vehicle.chassisNumber(),
-                            vehicle.driveable(), vehicle.numberOfSellableWheels(), vehicle.scrapyardId(),
-                            motorcycle.hasSidecar(), motorcycle.engineCapacity(), motorcycle.isModified(),
-                            motorcycle.numberOfWheels());
+                    sql = String.format(INSERT_MOTORCYCLE_SQL, vehicle.getId(), vehicle.getBrand(), vehicle.getModel(),
+                            vehicle.getYearModel(), vehicle.getRegistrationNumber(), vehicle.getChassisNumber(),
+                            vehicle.isDriveable(), vehicle.getNumberOfSellableWheels(), vehicle.getScrapyardId(),
+                            motorcycle.getHasSidecar(), motorcycle.getEngineCapacity(), motorcycle.getIsModified(),
+                            motorcycle.getNumberOfWheels());
                 }
                 st.executeUpdate(sql);
             }
         }
     }
-//får frem alle skraphandlere fra datanasen
+//får frem alle skraphandlere fra databasen
     public List<Scrapyard> getAllScrapyards() throws SQLException, IOException {
         List<Scrapyard> scrapyards = new ArrayList<>();
         Properties props = loadProperties();
@@ -178,7 +178,7 @@ public class ScrapyardService {
         return scrapyards;
     }
 
-    //Pluker ut alle kjøretøy fra databssen min
+    //Pluker ut alle kjøretøy fra databasen min
     public List<Vehicle> getAllVehicles() throws SQLException, IOException {
         List<Vehicle> vehicles = new ArrayList<>();
         Properties props = loadProperties();
@@ -224,7 +224,7 @@ public class ScrapyardService {
         return vehicles;
     }
 
-    //Rekner seg freme til drivstoff toalt i fossilbilene
+    //Regner seg frem til drivstoff totalt i fossilbilene
     public int getTotalFuelAmount() throws SQLException, IOException {
         Properties props = loadProperties();
         String dbUrl = constructJdbcUrl(props);
@@ -291,7 +291,7 @@ public class ScrapyardService {
         return vehicles;
     }
 
-    //Finner de skraphandlerene med mest kjørøy:
+    //Finner de skraphandlerene med mest kjøretøy:
     public String getMostUsedScrapyard() throws SQLException, IOException {
         Properties props = loadProperties();
         String dbUrl = constructJdbcUrl(props);
